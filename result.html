@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: violet;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center elements horizontally */
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.2em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center form items */
+        }
+        
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 250px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        button, a {
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px; /* Add margin for spacing */
+            text-align: center; /* Center text in button */
+            text-decoration: none; /* Remove underline for links */
+        }
+
+        button:hover, a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Optional styles for styling the links */
+        a {
+            display: inline-block; /* Link as block for better spacing */
+        }
+    </style>
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    <p>Your estimated carbon emission is: <strong>{{ total_emission }}</strong> kg CO2</p>
+    <form method="POST" action="/leaderboard">
+        <input type="hidden" name="emission" value="{{ total_emission }}">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>  <!-- Move submit button inside form -->
+    </form>
+    <div style="text-align: center;">
+        <a href="/leaderboard">View Leaderboard</a>
+        <a href="/visualize?total_emission={{ total_emission }}">Visual</a>  <!-- Correctly pass the emission value -->
+        <a href="/">Go Home</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document</title>
+    <style>
+      body{
+        background-color: violet;
+        justify-content: center;
+        text-align: center;
+      }
+      div{
+        font-size: 32px;
+        justify-content: center;
+        padding: 50px;
+    }
+      #button1{
+          color: black;
+          background-color: greenyellow;
+          border-radius: 10px;
+          width: 100px;
+          font-weight: bold;
+      }
+      #button2{
+        color:black;
+        background-color: greenyellow;
+        border-radius: 10px;
+        width:100px;
+        font-weight: bold;
+      }
+    </style>
+</head>
+<body>
+  <div>
+  <h1>Welcome to our page</h1>
+  {% if message %}
+  <p style="color: black;">{{message}}</p>
+  {% endif %}
+  <a href="{{url_for('login')}}">Login</a>
+  <a href="{{url_for('register')}}">Register</a>
+</div>
+</body>
+</html>
