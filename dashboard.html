@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather & Environment Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        /* Add this style block for chart layout */
+        .charts-container {
+            display: flex;
+            justify-content: space-around; /* Distribute space between the charts */
+            align-items: flex-start; /* Align charts at the top */
+            margin: 20px 0; /* Add some spacing above and below the charts */
+        }
+        .chart {
+            width: 45%; /* Adjust width to fit two charts side by side */
+        }
+        canvas {
+            max-width: 100%; /* Prevent canvas from exceeding its parent container */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Weather & Environment Dashboard</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+ 
+    <div class="search-bar">
+        <form method="get" action="/dashboard/">
+            <input type="text" name="city" placeholder="Enter city" value="{{ weather.city}}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+ 
+    <div class="weather-container">
+        <div class="weather-card">Temperature: {{ weather.temperature }}°C</div>
+        <div class="weather-card">Feels Like: {{ weather.feels_like }}°C</div>
+        <div class="weather-card">Humidity: {{ weather.humidity }}%</div>
+        <div class="weather-card">Pressure: {{ weather.pressure }} hPa</div>
+        <div class="weather-card">Wind Speed: {{ weather.wind_speed }} KPH</div>
+        <div class="weather-card">Visibility: {{ weather.visibility }} km</div>
+        <div class="weather-card">Sunrise: {{ weather.sunrise }}</div>
+        <div class="weather-card">Sunset: {{ weather.sunset }}</div>
+        <div class="weather-card">AQI: {{  aqi_status }}</div>
+    </div>
+ 
+    <div class="charts-container">
+        <div class="chart">
+            <h4>Temperature Chart</h4>
+            <canvas id="temperatureChart"></canvas>
+        </div>
+        <div class="chart">
+            <h4>Humidity, Pressure & Wind Speed Chart</h4>
+            <canvas id="weatherChart"></canvas>
+        </div>
+    </div>
+ 
+    <script>
+        const ctxTemp = document.getElementById('temperatureChart').getContext('2d');
+        const temperatureData = [{{ weather.temperature }}, {{ weather.feels_like }}];
+ 
+        new Chart(ctxTemp, {
+            type: 'bar',
+            data: {
+                labels: ['Temperature', 'Feels Like'],
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    data: temperatureData,
+                    backgroundColor: ['rgb(255 127 127)', 'rgb(173, 216, 230)']
+                }]
+            }
+        });
+    </script>
+ 
+    <script>
+        const ctxWeather = document.getElementById('weatherChart').getContext('2d');
+        const weatherData = [
+            {{ weather.humidity }},
+            {{ weather.pressure }},
+            {{ weather.wind_speed }}
+        ];
+ 
+        new Chart(ctxWeather, {
+            type: 'line',
+            data: {
+                labels: ['Humidity (%)', 'Pressure (hPa)', 'Wind Speed (KPH)'],
+                datasets: [{
+                    label: 'Weather Conditions',
+                    data: weatherData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'black',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+ 
+    <h3>Latest News</h3>
+    <div class="news-container">
+        {% for article in news %}
+        <div class="news-card">
+            <a href="{{ article.link }}" target="_blank">
+                {% if article.image %}
+                <img src="{{ article.image }}" alt="{{ article.title }}">
+                {% else %}
+                <img src="/static/default.news.jpg" alt="Default Image">
+                {% endif %}
+                <h4>{{ article.title }}</h4>
+            </a>
+        </div>
+        {% endfor %}
+    </div>  
+</body>
+</html>
